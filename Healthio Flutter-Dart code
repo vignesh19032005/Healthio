@@ -1,0 +1,471 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isDarkMode = false;
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.blue,
+        hintColor: Colors.orange,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          color: Colors.blue,
+        ),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+        hintColor: Colors.orange,
+        scaffoldBackgroundColor: Colors.black,
+        appBarTheme: AppBarTheme(
+          color: Colors.black,
+        ),
+      ),
+      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => ProfilePage(toggleTheme: _toggleTheme),
+        '/edit': (context) => EditProfilePage(),
+      },
+    );
+  }
+}
+
+class ProfilePage extends StatefulWidget {
+  final VoidCallback toggleTheme;
+
+  ProfilePage({required this.toggleTheme});
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String _name = 'John Doe';
+  String _dateOfBirth = 'January 5th, 2024';
+  String _medicalHistory = 'No known allergies. Hypertension.';
+  String _vaccinationStatus = 'Fully vaccinated';
+  String _symptoms = 'None';
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Profile'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.brightness_6),
+              onPressed: widget.toggleTheme,
+            ),
+          ],
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: [
+              Tab(text: 'Profile'),
+              Tab(text: 'Symptom Checker'),
+              Tab(text: 'Health Recommendations'),
+              Tab(text: 'Vaccination Centers'),
+              Tab(text: 'Educational Resources'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            profileTab(context),
+            symptomCheckerTab(),
+            healthRecommendationsTab(),
+            vaccinationCentersTab(),
+            educationalResourcesTab(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget profileTab(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Profile',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              children: [
+                Text('Name:', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(width: 8.0),
+                Text(_name),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            Row(
+              children: [
+                Text('Date of Birth:', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(width: 8.0),
+                Text(_dateOfBirth),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            Row(
+              children: [
+                Text('Medical History:', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(width: 8.0),
+                Expanded(child: Text(_medicalHistory)),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            Row(
+              children: [
+                Text('Vaccination Status:', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(width: 8.0),
+                Text(_vaccinationStatus),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            Row(
+              children: [
+                Text('Symptoms:', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(width: 8.0),
+                Expanded(child: Text(_symptoms)),
+              ],
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/edit').then((value) {
+                  setState(() {
+                    if (value != null && value is Map<String, String>) {
+                      _name = value['name']!;
+                      _dateOfBirth = value['dateOfBirth']!;
+                      _medicalHistory = value['medicalHistory']!;
+                      _vaccinationStatus = value['vaccinationStatus']!;
+                    }
+                  });
+                });
+              },
+              child: Text('Edit Profile'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).hintColor,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Image.network(
+              'https://via.placeholder.com/300',
+              height: 200,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget symptomCheckerTab() {
+    List<Map<String, String>> symptoms = [
+      {'symptom': 'Fever', 'description': 'An elevated body temperature.', 'treatment': 'Over-the-counter medications like acetaminophen or ibuprofen can help reduce fever. In some cases, treating the underlying cause (infection) with antibiotics or other medications might be necessary.'},
+      {'symptom': 'Fatigue', 'description': 'Feeling constantly tired or lacking energy.', 'treatment': 'Addressing the underlying cause is key. This could involve treating conditions like anemia or sleep disorders, improving diet and exercise habits, or managing stress.'},
+      {'symptom': 'Headache', 'description': 'Pain or discomfort in the head.', 'treatment': 'Over-the-counter pain relievers like acetaminophen or ibuprofen can often help. Identifying and addressing triggers like stress, dehydration, or lack of sleep is also important.'},
+      {'symptom': 'Cough', 'description': 'A forceful expulsion of air from the lungs.', 'treatment': 'Treatment depends on the cause. For coughs due to the common cold or flu, over-the-counter cough suppressants or expectorants might be helpful. Inhalers can be used for asthma or allergies. Antibiotics won\'t help a viral infection, but can be necessary for a bacterial infection.'},
+      {'symptom': 'Sore Throat', 'description': 'Pain or scratchiness in the throat.', 'treatment': 'Over-the-counter pain relievers like lozenges or throat sprays can provide temporary relief. Gargling with warm salt water can also be soothing. Antibiotics are only necessary for bacterial infections like strep throat.'},
+      {'symptom': 'Nausea and Vomiting', 'description': 'Feeling sick to your stomach and throwing up.', 'treatment': 'Staying hydrated is crucial. Over-the-counter medications can help with nausea. In some cases, medication might be needed to stop vomiting. Treatment for the underlying cause is important.'},
+      {'symptom': 'Diarrhea', 'description': 'Loose, watery stools that occur more frequently than usual.', 'treatment': 'Staying hydrated with fluids containing electrolytes is essential. Over-the-counter medications like loperamide can help reduce diarrhea frequency. Treating the underlying cause (infection, food poisoning) is important.'},
+      {'symptom': 'Painful Urination', 'description': 'Burning or stinging sensation when urinating.', 'treatment': 'Antibiotics are typically prescribed for urinary tract infections (UTIs), the most common cause. Increasing fluid intake and using pain relievers might also be recommended.'},
+      {'symptom': 'Skin Rash', 'description': 'A red, itchy, or bumpy area on the skin.', 'treatment': 'Treatment depends on the cause. This might involve topical medications like creams or ointments, oral medications (antibiotics for some infections), or lifestyle changes (managing allergies, avoiding irritants).'},
+      {'symptom': 'Joint Pain', 'description': 'Pain or discomfort in the joints.', 'treatment': 'While there is no cure for arthritis, treatments can help manage pain and inflammation. These include pain relievers, physical therapy, injections, and in some cases, surgery. For other causes like tendinitis or bursitis, rest, ice, and anti-inflammatory medications can be helpful.'},
+    ];
+
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Symptom Checker',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            Text('Select a symptom to get diagnosis and treatment options.'),
+            SizedBox(height: 16.0),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: symptoms.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(symptoms[index]['symptom']!),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(symptoms[index]['symptom']!),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Description:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(symptoms[index]['description']!),
+                              SizedBox(height: 8.0),
+                              Text(
+                                'Treatment:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(symptoms[index]['treatment']!),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Close'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget healthRecommendationsTab() {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Health Recommendations',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            Text('Here are some personalized health recommendations for you:'),
+            SizedBox(height: 16.0),
+            ListTile(
+              title: Text('Maintain a balanced diet'),
+              subtitle: Text('Include a variety of fruits, vegetables, and lean proteins in your diet.'),
+            ),
+            ListTile(
+              title: Text('Exercise regularly'),
+              subtitle: Text('Aim for at least 30 minutes of moderate physical activity most days of the week.'),
+            ),
+            ListTile(
+              title: Text('Stay hydrated'),
+              subtitle: Text('Drink plenty of water throughout the day to stay hydrated.'),
+            ),
+            ListTile(
+              title: Text('Get enough sleep'),
+              subtitle: Text('Aim for 7-9 hours of sleep each night to ensure your body gets enough rest.'),
+            ),
+            ListTile(
+              title: Text('Manage stress'),
+              subtitle: Text('Practice stress-relieving techniques like meditation, deep breathing, or yoga.'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget vaccinationCentersTab() {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Vaccination Centers',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            Text('Find the nearest vaccination centers:'),
+            SizedBox(height: 16.0),
+            ListTile(
+              title: Text('Center 1'),
+              subtitle: Text('Address: 123 Main St, City, State, ZIP'),
+            ),
+            ListTile(
+              title: Text('Center 2'),
+              subtitle: Text('Address: 456 Elm St, City, State, ZIP'),
+            ),
+            ListTile(
+              title: Text('Center 3'),
+              subtitle: Text('Address: 789 Oak St, City, State, ZIP'),
+            ),
+            ListTile(
+              title: Text('Center 4'),
+              subtitle: Text('Address: 101 Pine St, City, State, ZIP'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget educationalResourcesTab() {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Educational Resources',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            Text('Browse these resources to learn more about your health:'),
+            SizedBox(height: 16.0),
+            ListTile(
+              title: Text('Health Article 1'),
+              subtitle: Text('Description of Health Article 1.'),
+            ),
+            ListTile(
+              title: Text('Health Article 2'),
+              subtitle: Text('Description of Health Article 2.'),
+            ),
+            ListTile(
+              title: Text('Health Article 3'),
+              subtitle: Text('Description of Health Article 3.'),
+            ),
+            ListTile(
+              title: Text('Health Article 4'),
+              subtitle: Text('Description of Health Article 4.'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EditProfilePage extends StatefulWidget {
+  @override
+  _EditProfilePageState createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = '';
+  String _dateOfBirth = '';
+  String _medicalHistory = '';
+  String _vaccinationStatus = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Profile'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _name = value!;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Date of Birth'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your date of birth';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _dateOfBirth = value!;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Medical History'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your medical history';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _medicalHistory = value!;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Vaccination Status'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your vaccination status';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _vaccinationStatus = value!;
+                },
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    Navigator.pop(context, {
+                      'name': _name,
+                      'dateOfBirth': _dateOfBirth,
+                      'medicalHistory': _medicalHistory,
+                      'vaccinationStatus': _vaccinationStatus,
+                    });
+                  }
+                },
+                child: Text('Save'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
