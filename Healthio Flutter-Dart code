@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(MyApp());
@@ -114,6 +115,11 @@ class _ProfilePageState extends State<ProfilePage> {
               'Profile',
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 10.0),
+            Image.asset(
+              'images/profile.jpg',
+              height: 200,
+            ),
             SizedBox(height: 16.0),
             Row(
               children: [
@@ -174,10 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 16.0),
-            Image.network(
-              'https://via.placeholder.com/300',
-              height: 200,
-            ),
+
           ],
         ),
       ),
@@ -208,6 +211,8 @@ class _ProfilePageState extends State<ProfilePage> {
               'Symptom Checker',
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 10.0),
+            Image.asset('images/symptom checker.png', height: 200),
             SizedBox(height: 8.0),
             Text('Select a symptom to get diagnosis and treatment options.'),
             SizedBox(height: 16.0),
@@ -226,27 +231,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           title: Text(symptoms[index]['symptom']!),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              SizedBox(height: 16.0),
                               Text(
-                                'Description:',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(symptoms[index]['description']!),
-                              SizedBox(height: 8.0),
-                              Text(
-                                'Treatment:',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(symptoms[index]['treatment']!),
+                                  'Description: ${symptoms[index]['description']}\n\nTreatment: ${symptoms[index]['treatment']}'),
                             ],
                           ),
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                setState(() {
+                                  _symptoms = symptoms[index]['symptom']!;
+                                });
+                                Navigator.pop(context);
                               },
-                              child: Text('Close'),
+                              child: Text('OK'),
                             ),
                           ],
                         );
@@ -274,27 +273,119 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
-            Text('Here are some personalized health recommendations for you:'),
+            Text('Receive personalized health recommendations.'),
             SizedBox(height: 16.0),
-            ListTile(
-              title: Text('Maintain a balanced diet'),
-              subtitle: Text('Include a variety of fruits, vegetables, and lean proteins in your diet.'),
+            AnimatedContainer(
+              duration: Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Diet Plan:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                      'Maintain a balanced diet including a variety of foods from all food groups: fruits, vegetables, proteins, whole grains, and dairy. Avoid excessive sugar, salt, and saturated fats.'),
+                  SizedBox(height: 8.0),
+                  Image.asset('images/diet.png', height: 150),
+                ],
+              ),
             ),
-            ListTile(
-              title: Text('Exercise regularly'),
-              subtitle: Text('Aim for at least 30 minutes of moderate physical activity most days of the week.'),
+            SizedBox(height: 8.0),
+            AnimatedContainer(
+              duration: Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Water Intake:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                      'Aim to drink at least 8 glasses of water daily to stay hydrated. Adjust your intake based on activity level, climate, and health conditions.'),
+                  SizedBox(height: 8.0),
+                  Image.asset('images/drink water.png', height: 150),
+                ],
+              ),
             ),
-            ListTile(
-              title: Text('Stay hydrated'),
-              subtitle: Text('Drink plenty of water throughout the day to stay hydrated.'),
+            SizedBox(height: 8.0),
+            AnimatedContainer(
+              duration: Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Sleep:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                      'Get 7-9 hours of quality sleep each night. Establish a consistent sleep schedule and create a restful environment. Avoid caffeine and electronic devices before bed.'),
+                  SizedBox(height: 8.0),
+                  Image.asset('images/good sleep.png', height: 150),
+                ],
+              ),
             ),
-            ListTile(
-              title: Text('Get enough sleep'),
-              subtitle: Text('Aim for 7-9 hours of sleep each night to ensure your body gets enough rest.'),
+            SizedBox(height: 8.0),
+            AnimatedContainer(
+              duration: Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Physical Activity:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                      'Engage in at least 150 minutes of moderate aerobic activity or 75 minutes of vigorous activity per week. Include muscle-strengthening exercises on 2 or more days a week.'),
+                  SizedBox(height: 8.0),
+                  Image.asset('images/exercise.png', height: 150),
+                ],
+              ),
             ),
-            ListTile(
-              title: Text('Manage stress'),
-              subtitle: Text('Practice stress-relieving techniques like meditation, deep breathing, or yoga.'),
+            SizedBox(height: 8.0),
+            AnimatedContainer(
+              duration: Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mental Health:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                      'Practice stress management techniques such as mindfulness, meditation, and deep breathing exercises. Stay connected with loved ones and seek professional help if needed.'),
+                  SizedBox(height: 8.0),
+                  Image.asset('images/stress management.png', height: 150),
+                ],
+              ),
+            ),
+            SizedBox(height: 8.0),
+            AnimatedContainer(
+              duration: Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Preventive Care:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                      'Stay up to date with vaccinations and regular health screenings. Follow your healthcare provider’s advice and take prescribed medications as directed.'),
+                  SizedBox(height: 8.0),
+                  Image.asset('images/vaccination.png', height: 150),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'For more health tips, visit: https://www.healthline.com',
+              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
             ),
           ],
         ),
@@ -314,23 +405,23 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
-            Text('Find the nearest vaccination centers:'),
+            Text('Find nearby vaccination centers.'),
             SizedBox(height: 16.0),
-            ListTile(
-              title: Text('Center 1'),
-              subtitle: Text('Address: 123 Main St, City, State, ZIP'),
+            ElevatedButton(
+              onPressed: () {
+                // Logic to open Google Maps can be added here
+              },
+              child: Text('Open in Google Maps'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).hintColor,
+              ),
             ),
-            ListTile(
-              title: Text('Center 2'),
-              subtitle: Text('Address: 456 Elm St, City, State, ZIP'),
-            ),
-            ListTile(
-              title: Text('Center 3'),
-              subtitle: Text('Address: 789 Oak St, City, State, ZIP'),
-            ),
-            ListTile(
-              title: Text('Center 4'),
-              subtitle: Text('Address: 101 Pine St, City, State, ZIP'),
+            SizedBox(height: 16.0),
+            Image.asset('images/google maps.png', height: 200),
+            SizedBox(height: 16.0),
+            Text(
+              'Google Maps: https://maps.google.com',
+              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
             ),
           ],
         ),
@@ -350,23 +441,27 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
-            Text('Browse these resources to learn more about your health:'),
+            Text('Explore materials, blogs, and articles on health tips.'),
             SizedBox(height: 16.0),
-            ListTile(
-              title: Text('Health Article 1'),
-              subtitle: Text('Description of Health Article 1.'),
+            Image.asset('images/articles.png', height: 200),
+            SizedBox(height: 16.0),
+            Text(
+              'Health Blogs and Articles:',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            ListTile(
-              title: Text('Health Article 2'),
-              subtitle: Text('Description of Health Article 2.'),
+            Text(
+              'WebMD: https://www.webmd.com',
+              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
             ),
-            ListTile(
-              title: Text('Health Article 3'),
-              subtitle: Text('Description of Health Article 3.'),
+            SizedBox(height: 8.0),
+            Text(
+              'Mayo Clinic: https://www.mayoclinic.org',
+              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
             ),
-            ListTile(
-              title: Text('Health Article 4'),
-              subtitle: Text('Description of Health Article 4.'),
+            SizedBox(height: 8.0),
+            Text(
+              'Healthline: https://www.healthline.com',
+              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
             ),
           ],
         ),
@@ -375,17 +470,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class EditProfilePage extends StatefulWidget {
-  @override
-  _EditProfilePageState createState() => _EditProfilePageState();
-}
-
-class _EditProfilePageState extends State<EditProfilePage> {
-  final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _dateOfBirth = '';
-  String _medicalHistory = '';
-  String _vaccinationStatus = '';
+class EditProfilePage extends StatelessWidget {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
+  final TextEditingController _medicalHistoryController = TextEditingController();
+  final TextEditingController _vaccinationStatusController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -395,72 +484,50 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'Edit Profile',
+                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16.0),
+              Image.asset('images/edit profile.png', height: 200),
+              SizedBox(height: 16.0),
               TextFormField(
+                controller: _nameController,
                 decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _name = value!;
-                },
               ),
+              SizedBox(height: 8.0),
               TextFormField(
+                controller: _dateOfBirthController,
                 decoration: InputDecoration(labelText: 'Date of Birth'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your date of birth';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _dateOfBirth = value!;
-                },
               ),
+              SizedBox(height: 8.0),
               TextFormField(
+                controller: _medicalHistoryController,
                 decoration: InputDecoration(labelText: 'Medical History'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your medical history';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _medicalHistory = value!;
-                },
               ),
+              SizedBox(height: 8.0),
               TextFormField(
+                controller: _vaccinationStatusController,
                 decoration: InputDecoration(labelText: 'Vaccination Status'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your vaccination status';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _vaccinationStatus = value!;
-                },
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    Navigator.pop(context, {
-                      'name': _name,
-                      'dateOfBirth': _dateOfBirth,
-                      'medicalHistory': _medicalHistory,
-                      'vaccinationStatus': _vaccinationStatus,
-                    });
-                  }
+                  Navigator.pop(context, {
+                    'name': _nameController.text,
+                    'dateOfBirth': _dateOfBirthController.text,
+                    'medicalHistory': _medicalHistoryController.text,
+                    'vaccinationStatus': _vaccinationStatusController.text,
+                  });
                 },
                 child: Text('Save'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).hintColor,
+                ),
               ),
             ],
           ),
