@@ -1,6 +1,6 @@
 # healthcare
 
-A new Flutter project.
+A new Flutter project for healthcare named Healthio with many features 
 
 ## Getting Started
 
